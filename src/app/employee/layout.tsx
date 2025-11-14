@@ -3,6 +3,7 @@
 import { useEffect, useState } from 'react';
 import { useRouter } from 'next/navigation';
 import Link from 'next/link';
+import Image from 'next/image';
 import FloatingChatbot from '@/components/layout/FloatingChatbot';
 import { 
   User, 
@@ -84,9 +85,16 @@ export default function EmployeeLayout({
       {/* Top Navigation */}
       <nav className="bg-white shadow-sm border-b border-gray-200">
         <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
-          <div className="flex justify-between h-16">
+          <div className="flex justify-between h-14 sm:h-16">
             <div className="flex items-center">
-              <div className="flex-shrink-0">
+              <div className="flex-shrink-0 flex items-center space-x-3">
+                <Image
+                  src="/1.jpeg"
+                  alt="Government of Uttar Pradesh Logo"
+                  width={32}
+                  height={32}
+                  className="rounded-full"
+                />
                 <h1 className="text-xl font-bold text-gray-900">HRMS Employee</h1>
               </div>
               <div className="hidden md:ml-6 md:flex md:items-center md:space-x-4">

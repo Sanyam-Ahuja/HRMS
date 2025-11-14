@@ -2,6 +2,7 @@
 
 import { useEffect, useState } from 'react';
 import { useRouter } from 'next/navigation';
+import Image from 'next/image';
 import AdminSidebar from '@/components/layout/AdminSidebar';
 import FloatingChatbot from '@/components/layout/FloatingChatbot';
 
@@ -76,11 +77,20 @@ export default function AdminLayout({
       <AdminSidebar onLogout={handleLogout} />
       <div className="flex-1 flex flex-col overflow-hidden">
         {/* Header */}
-        <header className="bg-white shadow-sm border-b border-gray-200 px-6 py-4">
+        <header className="bg-white border-b border-gray-200 px-6 py-4">
           <div className="flex items-center justify-between">
-            <h2 className="text-lg font-semibold text-gray-900">
-              Admin Dashboard
-            </h2>
+            <div className="flex items-center space-x-3">
+              <Image
+                src="/1.jpeg"
+                alt="Government of Uttar Pradesh Logo"
+                width={32}
+                height={32}
+                className="rounded-full"
+              />
+              <h2 className="text-lg font-semibold text-gray-900">
+                Admin Dashboard
+              </h2>
+            </div>
             <div className="flex items-center space-x-4">
               <span className="text-sm text-gray-600">
                 Welcome, {user.name}
