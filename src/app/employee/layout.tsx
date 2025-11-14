@@ -9,7 +9,8 @@ import {
   FileText, 
   MessageSquare,
   LayoutDashboard,
-  LogOut
+  LogOut,
+  Calendar
 } from 'lucide-react';
 
 interface User {
@@ -102,6 +103,13 @@ export default function EmployeeLayout({
                 >
                   <User className="w-4 h-4 mr-2" />
                   Profile
+                </Link>
+                <Link
+                  href="/employee/leaves"
+                  className="text-gray-600 hover:text-gray-900 px-3 py-2 rounded-md text-sm font-medium flex items-center"
+                >
+                  <Calendar className="w-4 h-4 mr-2" />
+                  Leave Management
                 </Link>
                 <Link
                   href="/employee/salary-slips"

@@ -33,6 +33,12 @@ export async function GET(request: NextRequest) {
       ];
     }
 
+    // Exclude relieved employees from listing by default
+    const includeRelieved = searchParams.get('includeRelieved') === 'true';
+    if (!includeRelieved) {
+      userQuery.isRelieved = { $ne: true };
+    }
+
     // Get employees with their profiles
     const employees = await User.find(userQuery)
       .select('-passwordHash')

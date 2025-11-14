@@ -43,7 +43,7 @@ export default function AdminDashboard() {
       
       const totalEmployees = employeesData.employees?.length || 0;
       const activeEmployees = employeesData.employees?.filter((emp: any) => 
-        emp.profile?.status === 'Active'
+        emp.profile?.status === 'Active' && !emp.isRelieved
       ).length || 0;
 
       // Fetch recent audit logs
@@ -68,7 +68,7 @@ export default function AdminDashboard() {
       // Calculate total payroll from employee profiles (current salaries)
       if (employeesData.employees) {
         totalPayroll = employeesData.employees.reduce((total: number, emp: any) => {
-          if (emp.profile && emp.profile.status === 'Active') {
+          if (emp.profile && emp.profile.status === 'Active' && !emp.isRelieved) {
             const netSalary = emp.profile.basicSalary + emp.profile.allowances - emp.profile.deductions;
             return total + netSalary;
           }

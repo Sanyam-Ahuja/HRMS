@@ -42,9 +42,21 @@ interface PayrollSummary {
   lastPayrollMonth: string;
 }
 
+interface LeaveBalance {
+  year: number;
+  allocations: {
+    [key: string]: {
+      total: number;
+      used: number;
+      remaining: number;
+    };
+  };
+}
+
 export default function EmployeeDashboard() {
   const [profile, setProfile] = useState<UserProfile | null>(null);
   const [payrollSummary, setPayrollSummary] = useState<PayrollSummary | null>(null);
+  const [leaveBalance, setLeaveBalance] = useState<LeaveBalance | null>(null);
   const [loading, setLoading] = useState(true);
 
   useEffect(() => {
@@ -79,6 +91,14 @@ export default function EmployeeDashboard() {
                 year: 'numeric' 
               })}`,
             });
+          }
+
+          // Get leave balance
+          const leaveResponse = await fetch('/api/leaves/balance');
+          const leaveData = await leaveResponse.json();
+
+          if (leaveData.success) {
+            setLeaveBalance(leaveData.balance);
           }
         }
       }
@@ -171,6 +191,67 @@ export default function EmployeeDashboard() {
           </CardContent>
         </Card>
       </div>
+
+      {/* Leave Balance Section */}
+      {leaveBalance && (
+        <Card>
+          <CardHeader>
+            <CardTitle className="flex items-center justify-between">
+              <div className="flex items-center">
+                <Calendar className="w-5 h-5 mr-2" />
+                Leave Balance ({leaveBalance.year})
+              </div>
+              <Link href="/employee/leaves">
+                <button className="text-blue-600 hover:text-blue-700 text-sm font-medium">
+                  Apply for Leave →
+                </button>
+              </Link>
+            </CardTitle>
+          </CardHeader>
+          <CardContent>
+            <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-4">
+              {Object.entries(leaveBalance.allocations).map(([type, allocation]) => {
+                const typeColors: { [key: string]: string } = {
+                  sick: 'bg-red-100 text-red-800 border-red-200',
+                  casual: 'bg-blue-100 text-blue-800 border-blue-200',
+                  vacation: 'bg-purple-100 text-purple-800 border-purple-200',
+                  maternity: 'bg-pink-100 text-pink-800 border-pink-200',
+                  paternity: 'bg-indigo-100 text-indigo-800 border-indigo-200',
+                  emergency: 'bg-orange-100 text-orange-800 border-orange-200'
+                };
+                
+                const colorClass = typeColors[type] || 'bg-gray-100 text-gray-800 border-gray-200';
+                const progressPercentage = allocation.total > 0 ? (allocation.used / allocation.total) * 100 : 0;
+                
+                return (
+                  <div key={type} className={`p-4 rounded-lg border ${colorClass}`}>
+                    <div className="flex items-center justify-between mb-2">
+                      <h3 className="font-medium capitalize">
+                        {type.replace(/([A-Z])/g, ' $1').trim()}
+                      </h3>
+                      <span className="text-sm font-semibold">
+                        {allocation.remaining} left
+                      </span>
+                    </div>
+                    <div className="space-y-2">
+                      <div className="flex justify-between text-sm">
+                        <span>Used: {allocation.used}</span>
+                        <span>Total: {allocation.total}</span>
+                      </div>
+                      <div className="w-full bg-white bg-opacity-60 rounded-full h-2">
+                        <div
+                          className="bg-current h-2 rounded-full transition-all opacity-70"
+                          style={{ width: `${progressPercentage}%` }}
+                        ></div>
+                      </div>
+                    </div>
+                  </div>
+                );
+              })}
+            </div>
+          </CardContent>
+        </Card>
+      )}
 
       {/* Profile Overview & Job Details */}
       <div className="grid grid-cols-1 lg:grid-cols-2 gap-6">

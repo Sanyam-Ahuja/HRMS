@@ -8,6 +8,10 @@ export interface IUser extends Document {
   email: string;
   phone: string;
   address: string;
+  isRelieved: boolean;
+  relievingDate?: Date;
+  relievingReason?: string;
+  relievedBy?: mongoose.Types.ObjectId;
   createdAt: Date;
   updatedAt: Date;
 }
@@ -49,6 +53,21 @@ const UserSchema: Schema = new Schema(
       type: String,
       required: true,
       trim: true,
+    },
+    isRelieved: {
+      type: Boolean,
+      default: false,
+    },
+    relievingDate: {
+      type: Date,
+    },
+    relievingReason: {
+      type: String,
+      trim: true,
+    },
+    relievedBy: {
+      type: Schema.Types.ObjectId,
+      ref: 'User',
     },
   },
   {

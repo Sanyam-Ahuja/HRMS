@@ -10,7 +10,8 @@ import {
   Settings,
   MessageSquare,
   LayoutDashboard,
-  LogOut
+  LogOut,
+  Calendar
 } from 'lucide-react';
 
 const sidebarItems = [
@@ -30,9 +31,19 @@ const sidebarItems = [
     icon: DollarSign,
   },
   {
+    label: 'Leave Management',
+    href: '/admin/leaves',
+    icon: Calendar,
+  },
+  {
     label: 'Audit Logs',
     href: '/admin/logs',
     icon: FileText,
+  },
+  {
+    label: 'Support Messages',
+    href: '/admin/support',
+    icon: MessageSquare,
   },
   {
     label: 'Settings',
