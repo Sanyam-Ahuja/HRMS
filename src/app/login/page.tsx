@@ -218,6 +218,38 @@ export default function LoginPage() {
             Default admin: username=admin, password=admin123
           </p>
         </div>
+
+        {/* Government Disclaimer Footer */}
+        <div className="mt-16 mb-8 bg-gray-100 border border-gray-200 rounded-lg p-4 text-xs text-gray-600 leading-relaxed">
+          <div className="flex items-center justify-center mb-2">
+            <div className="w-6 h-6 bg-green-600 rounded-full flex items-center justify-center mr-3">
+              <div className="w-3 h-3 bg-white rounded-full"></div>
+            </div>
+          </div>
+          
+          <div className="text-center space-y-2">
+            <p>
+              <strong>Disclaimer:</strong> This website is managed by National Informatics Centre, Government of India. 
+              This is an e-governance initiative for Uttar Pradesh Government. The data available on this website is owned by 
+              respective departments.
+            </p>
+            
+            <p>
+              <strong>Best viewed in modern browsers:</strong> Chrome, Firefox, Safari, Edge
+            </p>
+            
+            <p>
+              <strong>Technical Support:</strong> support@ehrms.up.gov.in
+            </p>
+            
+            <div className="flex items-center justify-center space-x-4 mt-3 pt-2 border-t border-gray-300">
+              <a href="/about" className="text-blue-600 hover:text-blue-700 font-medium">About</a>
+              <span className="text-gray-400">|</span>
+              <a href="/chatbot" className="text-blue-600 hover:text-blue-700 font-medium">Contact</a>
+              <span className="text-gray-400">|</span>
+              <a href="/help" className="text-blue-600 hover:text-blue-700 font-medium">Help</a>
+            </div>
+          </div>
         </div>
       </div>
     </div>
