@@ -56,10 +56,28 @@ export default function AdminDashboard() {
         admin: log.admin.name,
       })) || [];
 
+      // Calculate current month payroll
+      const currentDate = new Date();
+      const currentMonth = currentDate.getMonth() + 1;
+      const currentYear = currentDate.getFullYear();
+
+      let totalPayroll = 0;
+      
+      // Calculate total payroll from employee profiles (current salaries)
+      if (employeesData.employees) {
+        totalPayroll = employeesData.employees.reduce((total: number, emp: any) => {
+          if (emp.profile && emp.profile.status === 'Active') {
+            const netSalary = emp.profile.basicSalary + emp.profile.allowances - emp.profile.deductions;
+            return total + netSalary;
+          }
+          return total;
+        }, 0);
+      }
+
       setStats({
         totalEmployees,
         activeEmployees,
-        totalPayroll: 0, // Will calculate this later
+        totalPayroll,
         recentActivities: recentActivities.length,
       });
       

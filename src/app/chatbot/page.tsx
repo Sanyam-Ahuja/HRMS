@@ -113,15 +113,28 @@ export default function ChatbotPage() {
         </div>
 
         {/* Chat Container */}
-        <Card className="h-[600px] flex flex-col">
+        <Card className="h-[600px] flex flex-col shadow-xl border-2 border-gray-100">
+          {/* Chat Header */}
+          <div className="bg-gradient-to-r from-blue-600 to-blue-700 px-6 py-4 rounded-t-lg">
+            <div className="flex items-center space-x-3">
+              <div className="w-10 h-10 bg-white bg-opacity-20 rounded-full flex items-center justify-center">
+                <MessageSquare className="w-6 h-6 text-white" />
+              </div>
+              <div>
+                <h3 className="text-white font-medium">HR Assistant</h3>
+                <p className="text-blue-100 text-sm">Online • Ready to help</p>
+              </div>
+            </div>
+          </div>
+
           {/* Messages Area */}
-          <div className="flex-1 overflow-y-auto p-6 space-y-4">
+          <div className="flex-1 overflow-y-auto p-6 space-y-4 bg-gradient-to-b from-gray-50 to-white">
             {messages.map((message) => (
-              <div key={message.id} className={`flex ${message.isUser ? 'justify-end' : 'justify-start'}`}>
-                <div className={`max-w-xs lg:max-w-md px-4 py-2 rounded-lg ${
+              <div key={message.id} className={`flex ${message.isUser ? 'justify-end' : 'justify-start'} mb-4`}>
+                <div className={`max-w-xs lg:max-w-md px-4 py-3 rounded-2xl shadow-md ${
                   message.isUser 
-                    ? 'bg-blue-600 text-white' 
-                    : 'bg-gray-100 text-gray-900'
+                    ? 'bg-gradient-to-r from-blue-600 to-blue-700 text-white ml-12' 
+                    : 'bg-white text-gray-900 mr-12 border border-gray-200'
                 }`}>
                   <p className="text-sm whitespace-pre-wrap">{message.text}</p>
                   <p className={`text-xs mt-1 ${

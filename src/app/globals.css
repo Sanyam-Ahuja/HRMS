@@ -31,6 +31,27 @@ input, select, textarea {
   color: #1f2937 !important;
 }
 
+/* Fix text colors throughout the app */
+.text-gray-900 {
+  color: #111827 !important;
+}
+
+.text-gray-800 {
+  color: #1f2937 !important;
+}
+
+.text-gray-700 {
+  color: #374151 !important;
+}
+
+.text-gray-600 {
+  color: #4b5563 !important;
+}
+
+.text-gray-500 {
+  color: #6b7280 !important;
+}
+
 /* Improve table visibility */
 table {
   border-collapse: separate;
@@ -47,4 +68,27 @@ input:focus, select:focus, textarea:focus, button:focus {
 ::placeholder {
   color: #9ca3af !important;
   opacity: 1 !important;
+}
+
+/* Fix modal and card text colors */
+.bg-white {
+  background-color: white !important;
+}
+
+.bg-white * {
+  color: inherit;
+}
+
+/* Ensure proper contrast for all elements */
+h1, h2, h3, h4, h5, h6 {
+  color: #111827 !important;
+}
+
+p, span, div {
+  color: inherit;
+}
+
+/* Fix button text colors */
+button {
+  color: inherit;
 }
