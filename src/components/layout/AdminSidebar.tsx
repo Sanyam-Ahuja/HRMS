@@ -49,7 +49,7 @@ export default function AdminSidebar({ onLogout }: AdminSidebarProps) {
   const pathname = usePathname();
 
   return (
-    <div className="w-64 bg-gray-900 text-white h-screen flex flex-col">
+    <div className="admin-sidebar w-64 bg-gray-900 text-white h-screen flex flex-col">
       {/* Header */}
       <div className="p-6 border-b border-gray-700">
         <h1 className="text-xl font-bold">HRMS Admin</h1>

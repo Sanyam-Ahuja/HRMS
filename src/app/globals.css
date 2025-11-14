@@ -31,33 +31,80 @@ input, select, textarea {
   color: #1f2937 !important;
 }
 
-/* Fix text colors throughout the app */
-.text-gray-900, .text-gray-900 * {
+/* Fix text colors for light backgrounds only */
+.bg-white .text-gray-900,
+.bg-gray-50 .text-gray-900,
+.bg-gray-100 .text-gray-900 {
   color: #111827 !important;
 }
 
-.text-gray-800, .text-gray-800 * {
+.bg-white .text-gray-800,
+.bg-gray-50 .text-gray-800,
+.bg-gray-100 .text-gray-800 {
   color: #1f2937 !important;
 }
 
-.text-gray-700, .text-gray-700 * {
+.bg-white .text-gray-700,
+.bg-gray-50 .text-gray-700,
+.bg-gray-100 .text-gray-700 {
   color: #374151 !important;
 }
 
-.text-gray-600, .text-gray-600 * {
+.bg-white .text-gray-600,
+.bg-gray-50 .text-gray-600,
+.bg-gray-100 .text-gray-600 {
   color: #4b5563 !important;
 }
 
-.text-gray-500, .text-gray-500 * {
+.bg-white .text-gray-500,
+.bg-gray-50 .text-gray-500,
+.bg-gray-100 .text-gray-500 {
   color: #6b7280 !important;
 }
 
-.text-white, .text-white * {
+/* Dark background text colors - preserve original colors */
+.bg-gray-900 .text-white,
+.bg-gray-800 .text-white,
+.bg-slate-900 .text-white,
+.bg-slate-800 .text-white {
   color: #ffffff !important;
 }
 
-.text-black, .text-black * {
+.bg-gray-900 .text-gray-300,
+.bg-gray-800 .text-gray-300,
+.bg-slate-900 .text-gray-300,
+.bg-slate-800 .text-gray-300 {
+  color: #d1d5db !important;
+}
+
+.bg-gray-900 .text-gray-100,
+.bg-gray-800 .text-gray-100,
+.bg-slate-900 .text-gray-100,
+.bg-slate-800 .text-gray-100 {
+  color: #f3f4f6 !important;
+}
+
+/* Always force white text on dark backgrounds */
+.text-white {
+  color: #ffffff !important;
+}
+
+.text-black {
   color: #000000 !important;
+}
+
+/* Remove problematic universal selectors that cause conflicts */
+.bg-gray-900 .text-white,
+.bg-gray-800 .text-white,
+.bg-slate-900 .text-white,
+.text-white {
+  color: #ffffff !important;
+}
+
+.bg-gray-900 .text-gray-300,
+.bg-gray-800 .text-gray-300,
+.text-gray-300 {
+  color: #d1d5db !important;
 }
 
 /* Fix specific color classes */
@@ -134,6 +181,37 @@ button {
   color: #111827 !important;
 }
 
+/* Dark sidebar specific fixes */
+.bg-gray-900 {
+  background-color: #111827 !important;
+  color: #ffffff !important;
+}
+
+.bg-gray-800 {
+  background-color: #1f2937 !important;
+  color: #ffffff !important;
+}
+
+/* Sidebar navigation text fixes */
+.bg-gray-900 nav a,
+.bg-gray-900 nav li,
+.bg-gray-900 nav span,
+.bg-gray-900 h1,
+.bg-gray-900 h2,
+.bg-gray-900 h3,
+.bg-gray-900 p {
+  color: inherit !important;
+}
+
+/* Preserve hover states for sidebar */
+.bg-gray-900 .text-gray-300:hover {
+  color: #ffffff !important;
+}
+
+.bg-gray-900 .hover\:text-white:hover {
+  color: #ffffff !important;
+}
+
 /* Card and container text fixes */
 .card, [class*="card"] {
   color: #111827 !important;
@@ -163,6 +241,46 @@ button {
 .invisible-text {
   color: #111827 !important;
   background-color: transparent !important;
+}
+
+/* Admin sidebar specific fixes */
+.admin-sidebar, 
+.w-64.bg-gray-900,
+[class*="bg-gray-900"] {
+  color: #ffffff !important;
+}
+
+.admin-sidebar *, 
+.w-64.bg-gray-900 *,
+[class*="bg-gray-900"] * {
+  color: inherit !important;
+}
+
+/* Override any conflicting text classes on dark backgrounds */
+.bg-gray-900 .text-gray-300,
+.bg-gray-800 .text-gray-300 {
+  color: #d1d5db !important;
+}
+
+.bg-gray-900 .text-white,
+.bg-gray-800 .text-white {
+  color: #ffffff !important;
+}
+
+/* Ensure navigation links are visible */
+.bg-gray-900 a,
+.bg-gray-800 a {
+  color: inherit !important;
+}
+
+.bg-gray-900 a.text-gray-300,
+.bg-gray-800 a.text-gray-300 {
+  color: #d1d5db !important;
+}
+
+.bg-gray-900 a:hover,
+.bg-gray-800 a:hover {
+  color: #ffffff !important;
 }
 
 /* Print styles for salary slips */
