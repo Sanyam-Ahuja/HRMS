@@ -484,7 +484,7 @@ export default function AdminLeavesPage() {
             )}
           </Card>
         </>
-      ) : (
+      ) : viewMode === 'calendar' ? (
         /* Calendar View */
         <Card className="p-6">
           <div className="flex items-center justify-between mb-6">
@@ -622,7 +622,7 @@ export default function AdminLeavesPage() {
                 </div>
 
                 <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
-                  {Object.entries(leaveBalance.allocations).map(([type, allocation]) => {
+                  {Object.entries(leaveBalance.allocations).map(([type, allocation]: [string, any]) => {
                     const typeColors: { [key: string]: string } = {
                       sick: 'bg-red-50 border-red-200',
                       casual: 'bg-blue-50 border-blue-200',
