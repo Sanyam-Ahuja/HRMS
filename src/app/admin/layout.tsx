@@ -3,6 +3,7 @@
 import { useEffect, useState } from 'react';
 import { useRouter } from 'next/navigation';
 import AdminSidebar from '@/components/layout/AdminSidebar';
+import FloatingChatbot from '@/components/layout/FloatingChatbot';
 
 interface User {
   id: string;
@@ -92,10 +93,13 @@ export default function AdminLayout({
         </header>
 
         {/* Main Content */}
-        <main className="flex-1 overflow-auto p-6">
+        <main className="flex-1 p-6 overflow-auto bg-gray-50">
           {children}
         </main>
       </div>
+      
+      {/* Floating Chatbot */}
+      <FloatingChatbot />
     </div>
   );
 }

@@ -3,6 +3,7 @@
 import { useEffect, useState } from 'react';
 import { useRouter } from 'next/navigation';
 import Link from 'next/link';
+import FloatingChatbot from '@/components/layout/FloatingChatbot';
 import { 
   User, 
   FileText, 
@@ -140,6 +141,9 @@ export default function EmployeeLayout({
       <main className="max-w-7xl mx-auto py-6 px-4 sm:px-6 lg:px-8">
         {children}
       </main>
+      
+      {/* Floating Chatbot */}
+      <FloatingChatbot />
     </div>
   );
 }

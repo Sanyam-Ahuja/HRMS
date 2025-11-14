@@ -35,11 +35,6 @@ const sidebarItems = [
     icon: FileText,
   },
   {
-    label: 'Chatbot',
-    href: '/admin/chatbot',
-    icon: MessageSquare,
-  },
-  {
     label: 'Settings',
     href: '/admin/settings/admins',
     icon: Settings,

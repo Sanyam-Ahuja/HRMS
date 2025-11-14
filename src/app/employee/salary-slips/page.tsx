@@ -32,17 +32,82 @@ function SalarySlipModal({ payroll, onClose }: SalarySlipModalProps) {
   if (!payroll) return null;
 
   const handlePrint = () => {
+    // Hide the modal buttons and background for printing
+    const modalButtons = document.querySelectorAll('.no-print');
+    modalButtons.forEach(btn => (btn as HTMLElement).style.display = 'none');
+    
     window.print();
+    
+    // Restore buttons after printing
+    setTimeout(() => {
+      modalButtons.forEach(btn => (btn as HTMLElement).style.display = '');
+    }, 100);
+  };
+
+  const handleDownloadPDF = () => {
+    // Simple HTML to PDF conversion using browser print
+    const printContent = document.getElementById('salary-slip-content');
+    if (printContent) {
+      const printWindow = window.open('', '_blank');
+      if (printWindow) {
+        printWindow.document.write(`
+          <html>
+            <head>
+              <title>Salary Slip - ${payroll.employee.name}</title>
+              <style>
+                body { font-family: Arial, sans-serif; margin: 20px; }
+                .header { text-align: center; border-bottom: 2px solid #333; padding-bottom: 20px; margin-bottom: 20px; }
+                .section { margin-bottom: 20px; }
+                .flex { display: flex; justify-content: space-between; }
+                .grid { display: grid; grid-template-columns: 1fr 1fr; gap: 20px; }
+                .border { border: 1px solid #ddd; padding: 15px; }
+                .total { background: #f0f9ff; border: 2px solid #0ea5e9; padding: 15px; }
+                .text-center { text-align: center; }
+                .font-bold { font-weight: bold; }
+                .text-lg { font-size: 1.125em; }
+                .text-sm { font-size: 0.875em; }
+                .text-blue { color: #0ea5e9; }
+                .text-green { color: #10b981; }
+                .text-red { color: #ef4444; }
+              </style>
+            </head>
+            <body>
+              ${printContent.innerHTML}
+            </body>
+          </html>
+        `);
+        printWindow.document.close();
+        printWindow.print();
+        printWindow.close();
+      }
+    }
   };
 
   return (
     <div className="fixed inset-0 bg-black bg-opacity-50 flex items-center justify-center z-50 p-4">
-      <div className="bg-white rounded-lg max-w-2xl w-full max-h-[90vh] overflow-auto">
+      <div className="bg-white rounded-lg max-w-4xl w-full max-h-[95vh] overflow-auto shadow-2xl">
         <div className="p-6">
-          {/* Header */}
-          <div className="flex items-center justify-between mb-6">
-            <h2 className="text-xl font-bold text-gray-900">Salary Slip</h2>
+          {/* Enhanced Header */}
+          <div className="flex items-center justify-between mb-6 no-print">
+            <div className="flex items-center space-x-3">
+              <div className="w-10 h-10 bg-blue-600 rounded-full flex items-center justify-center">
+                <FileText className="w-5 h-5 text-white" />
+              </div>
+              <div>
+                <h2 className="text-xl font-bold text-gray-900">Official Salary Slip</h2>
+                <p className="text-sm text-gray-600">
+                  {new Date(payroll.year, payroll.month - 1).toLocaleDateString('en-US', { 
+                    month: 'long', 
+                    year: 'numeric' 
+                  })}
+                </p>
+              </div>
+            </div>
             <div className="flex space-x-2">
+              <Button variant="outline" size="sm" onClick={handleDownloadPDF}>
+                <Download className="w-4 h-4 mr-2" />
+                Download
+              </Button>
               <Button variant="outline" size="sm" onClick={handlePrint}>
                 <Printer className="w-4 h-4 mr-2" />
                 Print
@@ -53,8 +118,8 @@ function SalarySlipModal({ payroll, onClose }: SalarySlipModalProps) {
             </div>
           </div>
 
-          {/* Salary Slip Content */}
-          <div id="salary-slip" className="bg-white border border-gray-300 p-8 rounded-lg print:shadow-none print:border-0">
+          {/* Professional Salary Slip Content */}
+          <div id="salary-slip-content" className="bg-white border-2 border-gray-300 p-8 rounded-lg print:shadow-none print:border-0 print:p-0">
             {/* Header */}
             <div className="text-center mb-8 border-b-2 border-gray-300 pb-6">
               <h1 className="text-2xl font-bold text-gray-900 mb-2">SALARY SLIP</h1>
@@ -168,10 +233,12 @@ export default function SalarySlipsPage() {
   const [payrolls, setPayrolls] = useState<PayrollRecord[]>([]);
   const [loading, setLoading] = useState(true);
   const [selectedPayroll, setSelectedPayroll] = useState<PayrollRecord | null>(null);
+  const [requesting, setRequesting] = useState(false);
   const [filters, setFilters] = useState({
     year: new Date().getFullYear().toString(),
     month: '',
   });
+  const [currentUser, setCurrentUser] = useState<any>(null);
 
   useEffect(() => {
     loadPayrolls();
@@ -184,6 +251,8 @@ export default function SalarySlipsPage() {
       const userData = await userResponse.json();
 
       if (userData.success) {
+        setCurrentUser(userData.user);
+        
         // Get payroll records
         const params = new URLSearchParams();
         if (filters.year) params.append('year', filters.year);
@@ -208,6 +277,43 @@ export default function SalarySlipsPage() {
     loadPayrolls();
   };
 
+  const handleRequestPayroll = async () => {
+    if (!currentUser) return;
+    
+    setRequesting(true);
+    try {
+      const currentDate = new Date();
+      const currentMonth = currentDate.getMonth() + 1;
+      const currentYear = currentDate.getFullYear();
+      
+      const response = await fetch('/api/payroll/request', {
+        method: 'POST',
+        headers: { 'Content-Type': 'application/json' },
+        body: JSON.stringify({ 
+          month: currentMonth,
+          year: currentYear,
+          message: `Payroll request for ${currentMonth}/${currentYear} by ${currentUser.name}`
+        })
+      });
+
+      const data = await response.json();
+      
+      if (data.success) {
+        alert(data.message);
+        // Optionally refresh the payroll list
+        loadPayrolls();
+      } else {
+        alert(data.error || 'Failed to submit payroll request');
+      }
+      
+    } catch (error) {
+      console.error('Failed to request payroll:', error);
+      alert('Failed to submit payroll request. Please try again.');
+    } finally {
+      setRequesting(false);
+    }
+  };
+
   const getMonthName = (month: number) => {
     return new Date(2000, month - 1).toLocaleDateString('en-US', { month: 'long' });
   };
@@ -219,6 +325,16 @@ export default function SalarySlipsPage() {
         <div>
           <h1 className="text-2xl font-bold text-gray-900">Salary Slips</h1>
           <p className="text-gray-600">View and download your salary history</p>
+        </div>
+        <div className="flex space-x-3">
+          <Button 
+            onClick={handleRequestPayroll}
+            loading={requesting}
+            className="flex items-center space-x-2"
+          >
+            <FileText className="w-4 h-4" />
+            <span>Request Current Month</span>
+          </Button>
         </div>
       </div>
 
@@ -392,15 +508,32 @@ export default function SalarySlipsPage() {
               </table>
             </div>
           ) : (
-            <div className="text-center py-8">
-              <FileText className="w-12 h-12 text-gray-400 mx-auto mb-4" />
-              <p className="text-gray-600">No salary slips found</p>
-              <p className="text-sm text-gray-500">
+            <div className="text-center py-12">
+              <div className="w-24 h-24 bg-gray-100 rounded-full flex items-center justify-center mx-auto mb-6">
+                <FileText className="w-12 h-12 text-gray-400" />
+              </div>
+              <h3 className="text-lg font-semibold text-gray-900 mb-2">No Salary Slips Found</h3>
+              <p className="text-gray-600 mb-4">
                 {filters.year || filters.month 
-                  ? 'Try adjusting your filters or contact HR'
-                  : 'Salary slips will appear here once payroll is processed'
+                  ? 'No salary slips match your current filters'
+                  : 'Your salary slips will appear here once payroll is processed'
                 }
               </p>
+              {!filters.year && !filters.month && (
+                <div className="space-y-4">
+                  <Button 
+                    onClick={handleRequestPayroll}
+                    loading={requesting}
+                    className="flex items-center space-x-2 mx-auto"
+                  >
+                    <FileText className="w-4 h-4" />
+                    <span>Request Your First Payroll</span>
+                  </Button>
+                  <p className="text-xs text-gray-500">
+                    Click above to request your payroll slip from HR
+                  </p>
+                </div>
+              )}
             </div>
           )}
         </CardContent>

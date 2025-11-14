@@ -32,24 +32,49 @@ input, select, textarea {
 }
 
 /* Fix text colors throughout the app */
-.text-gray-900 {
+.text-gray-900, .text-gray-900 * {
   color: #111827 !important;
 }
 
-.text-gray-800 {
+.text-gray-800, .text-gray-800 * {
   color: #1f2937 !important;
 }
 
-.text-gray-700 {
+.text-gray-700, .text-gray-700 * {
   color: #374151 !important;
 }
 
-.text-gray-600 {
+.text-gray-600, .text-gray-600 * {
   color: #4b5563 !important;
 }
 
-.text-gray-500 {
+.text-gray-500, .text-gray-500 * {
   color: #6b7280 !important;
+}
+
+.text-white, .text-white * {
+  color: #ffffff !important;
+}
+
+.text-black, .text-black * {
+  color: #000000 !important;
+}
+
+/* Fix specific color classes */
+.text-blue-600, .text-blue-600 * {
+  color: #2563eb !important;
+}
+
+.text-blue-700, .text-blue-700 * {
+  color: #1d4ed8 !important;
+}
+
+.text-green-600, .text-green-600 * {
+  color: #16a34a !important;
+}
+
+.text-red-600, .text-red-600 * {
+  color: #dc2626 !important;
 }
 
 /* Improve table visibility */
@@ -91,4 +116,86 @@ p, span, div {
 /* Fix button text colors */
 button {
   color: inherit;
+}
+
+/* Comprehensive text color inheritance fixes */
+.bg-white {
+  background-color: white !important;
+  color: #111827 !important;
+}
+
+.bg-gray-50 {
+  background-color: #f9fafb !important;
+  color: #111827 !important;
+}
+
+.bg-gray-100 {
+  background-color: #f3f4f6 !important;
+  color: #111827 !important;
+}
+
+/* Card and container text fixes */
+.card, [class*="card"] {
+  color: #111827 !important;
+}
+
+/* Modal and overlay text fixes */
+.modal, .overlay, .dropdown {
+  color: #111827 !important;
+}
+
+/* Ensure all text is readable on light backgrounds */
+.bg-white *, .bg-gray-50 *, .bg-gray-100 * {
+  color: inherit !important;
+}
+
+/* Fix for gradient backgrounds */
+.bg-gradient-to-r, .bg-gradient-to-br, .bg-gradient-to-b {
+  color: inherit !important;
+}
+
+/* Specific fixes for common problematic areas */
+.text-current {
+  color: currentColor !important;
+}
+
+/* Force visibility for any hidden text */
+.invisible-text {
+  color: #111827 !important;
+  background-color: transparent !important;
+}
+
+/* Print styles for salary slips */
+@media print {
+  .no-print {
+    display: none !important;
+  }
+  
+  body {
+    background: white !important;
+    color: black !important;
+  }
+  
+  .print-break {
+    page-break-after: always;
+  }
+  
+  .print-no-break {
+    page-break-inside: avoid;
+  }
+  
+  /* Ensure salary slip content is visible when printing */
+  #salary-slip-content {
+    background: white !important;
+    color: black !important;
+    border: 2px solid black !important;
+    padding: 20px !important;
+    margin: 0 !important;
+  }
+  
+  /* Hide modal background when printing */
+  .fixed.inset-0 {
+    position: relative !important;
+    background: transparent !important;
+  }
 }
