@@ -1,7 +1,7 @@
 'use client';
 
 import { useEffect, useState } from 'react';
-import { FileText, Calendar, User, Search } from 'lucide-react';
+import { FileText, Calendar, User, Search, Info, Eye, Plus, Edit, Trash2 } from 'lucide-react';
 import Card from '@/components/ui/Card';
 import Button from '@/components/ui/Button';
 import Input from '@/components/ui/Input';
@@ -90,6 +90,61 @@ export default function AuditLogsPage() {
 
   const formatAction = (action: string) => {
     return action.replace(/_/g, ' ').toLowerCase().replace(/\b\w/g, l => l.toUpperCase());
+  };
+
+  const getActionIcon = (action: string) => {
+    switch (action) {
+      case 'CREATE_EMPLOYEE': return <Plus className="w-4 h-4 text-green-600" />;
+      case 'UPDATE_EMPLOYEE': return <Edit className="w-4 h-4 text-blue-600" />;
+      case 'DELETE_EMPLOYEE': return <Trash2 className="w-4 h-4 text-red-600" />;
+      case 'GENERATE_PAYROLL': return <FileText className="w-4 h-4 text-purple-600" />;
+      default: return <Eye className="w-4 h-4 text-gray-600" />;
+    }
+  };
+
+  const getActionDescription = (log: AuditLog) => {
+    const adminName = log.admin.name;
+    
+    switch (log.action) {
+      case 'CREATE_EMPLOYEE':
+        const employeeName = log.after?.name || 'New Employee';
+        return `${adminName} created employee profile for ${employeeName}`;
+      
+      case 'UPDATE_EMPLOYEE':
+        const updatedName = log.after?.name || log.before?.name || 'Employee';
+        return `${adminName} updated profile information for ${updatedName}`;
+      
+      case 'DELETE_EMPLOYEE':
+        const deletedName = log.before?.name || 'Employee';
+        return `${adminName} deleted employee ${deletedName}`;
+      
+      case 'GENERATE_PAYROLL':
+        const payrollEmployee = log.after?.employeeName || 'Employee';
+        const month = log.after?.month || 'Unknown';
+        const year = log.after?.year || 'Unknown';
+        return `${adminName} generated payroll for ${payrollEmployee} (${month}/${year})`;
+      
+      default:
+        return `${adminName} performed ${formatAction(log.action).toLowerCase()}`;
+    }
+  };
+
+  const getActionDetails = (log: AuditLog) => {
+    const details = [];
+    
+    if (log.targetId) {
+      details.push(`Target ID: ${log.targetId}`);
+    }
+    
+    if (log.before) {
+      details.push(`Previous: ${JSON.stringify(log.before, null, 2).slice(0, 200)}...`);
+    }
+    
+    if (log.after) {
+      details.push(`Updated: ${JSON.stringify(log.after, null, 2).slice(0, 200)}...`);
+    }
+    
+    return details.join('\n\n');
   };
 
   return (
@@ -249,19 +304,39 @@ export default function AuditLogsPage() {
                         </div>
                       </td>
                       <td className="px-6 py-4 whitespace-nowrap">
-                        <span className="inline-flex px-2 py-1 text-xs font-semibold rounded-full bg-blue-100 text-blue-800">
-                          {formatAction(log.action)}
-                        </span>
-                      </td>
-                      <td className="px-6 py-4">
-                        <div className="text-sm text-gray-900">
-                          Target ID: {log.targetId}
+                        <div className="flex items-center space-x-2">
+                          {getActionIcon(log.action)}
+                          <span className="inline-flex px-2 py-1 text-xs font-semibold rounded-full bg-blue-100 text-blue-800">
+                            {formatAction(log.action)}
+                          </span>
                         </div>
-                        {log.after && (
-                          <div className="text-xs text-gray-500 mt-1">
-                            {JSON.stringify(log.after, null, 2).slice(0, 100)}...
+                      </td>
+                      <td className="px-6 py-4 relative">
+                        <div className="flex items-start justify-between">
+                          <div className="flex-1">
+                            <div className="text-sm text-gray-900 mb-1">
+                              {getActionDescription(log)}
+                            </div>
+                            <div className="text-xs text-gray-500">
+                              {new Date(log.timestamp).toLocaleTimeString()}
+                            </div>
                           </div>
-                        )}
+                          
+                          {/* Hover Button for Technical Details */}
+                          <div className="relative group ml-2">
+                            <button className="p-1 text-gray-400 hover:text-gray-600 transition-colors">
+                              <Info className="w-4 h-4" />
+                            </button>
+                            
+                            {/* Tooltip with Technical Details */}
+                            <div className="absolute right-0 top-6 w-80 bg-gray-900 text-white text-xs rounded-lg p-3 shadow-lg opacity-0 group-hover:opacity-100 transition-opacity duration-200 pointer-events-none z-10">
+                              <div className="font-semibold mb-2">Technical Details:</div>
+                              <pre className="whitespace-pre-wrap font-mono text-xs overflow-hidden">
+                                {getActionDetails(log)}
+                              </pre>
+                            </div>
+                          </div>
+                        </div>
                       </td>
                     </tr>
                   ))}

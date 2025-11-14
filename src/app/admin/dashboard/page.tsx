@@ -1,7 +1,7 @@
 'use client';
 
 import { useEffect, useState } from 'react';
-import { Users, DollarSign, TrendingUp, FileText } from 'lucide-react';
+import { Users, DollarSign, TrendingUp, FileText, Plus, Edit, Eye, Info } from 'lucide-react';
 import Card from '@/components/ui/Card';
 
 interface DashboardStats {
@@ -9,6 +9,8 @@ interface DashboardStats {
   activeEmployees: number;
   totalPayroll: number;
   recentActivities: number;
+  previousMonthEmployees?: number;
+  previousMonthPayroll?: number;
 }
 
 interface RecentActivity {
@@ -89,27 +91,58 @@ export default function AdminDashboard() {
     }
   };
 
+  const calculatePercentageChange = (current: number, previous: number): string => {
+    if (!previous || previous === 0) return 'New';
+    const change = ((current - previous) / previous) * 100;
+    const sign = change >= 0 ? '+' : '';
+    return `${sign}${Math.round(change)}%`;
+  };
+
+  const getActivityIcon = (action: string) => {
+    switch (action) {
+      case 'CREATE_EMPLOYEE': return <Plus className="w-4 h-4 text-green-600" />;
+      case 'UPDATE_EMPLOYEE': return <Edit className="w-4 h-4 text-blue-600" />;
+      case 'GENERATE_PAYROLL': return <FileText className="w-4 h-4 text-purple-600" />;
+      default: return <Eye className="w-4 h-4 text-gray-600" />;
+    }
+  };
+
+  const getActivityDescription = (activity: any) => {
+    const adminName = activity.admin || 'Admin';
+    
+    switch (activity.action) {
+      case 'CREATE_EMPLOYEE':
+        return `${adminName} created a new employee profile`;
+      case 'UPDATE_EMPLOYEE':
+        return `${adminName} updated employee information`;
+      case 'GENERATE_PAYROLL':
+        return `${adminName} generated monthly payroll`;
+      default:
+        return `${adminName} performed ${activity.action.replace(/_/g, ' ').toLowerCase()}`;
+    }
+  };
+
   const statCards = [
     {
       title: 'Total Employees',
       value: stats.totalEmployees,
       icon: Users,
       bgColor: 'bg-blue-500',
-      change: '+12%',
+      change: stats.totalEmployees > 0 ? 'Total' : 'No data',
     },
     {
       title: 'Active Employees',
       value: stats.activeEmployees,
       icon: TrendingUp,
       bgColor: 'bg-green-500',
-      change: '+8%',
+      change: stats.activeEmployees > 0 ? 'Working' : 'None',
     },
     {
       title: 'Monthly Payroll',
       value: `₹${stats.totalPayroll.toLocaleString()}`,
       icon: DollarSign,
       bgColor: 'bg-purple-500',
-      change: '+5%',
+      change: stats.totalPayroll > 0 ? 'Current' : 'No payroll',
     },
     {
       title: 'Recent Activities',
@@ -172,20 +205,35 @@ export default function AdminDashboard() {
           <div className="space-y-4">
             {activities.length > 0 ? (
               activities.map((activity) => (
-                <div key={activity.id} className="flex items-center justify-between py-2 border-b border-gray-100 last:border-b-0">
-                  <div>
-                    <p className="text-sm font-medium text-gray-900">
-                      {activity.action.replace('_', ' ')}
-                    </p>
-                    <p className="text-xs text-gray-500">by {activity.admin}</p>
+                <div key={activity.id} className="flex items-center justify-between py-3 px-4 bg-gray-50 rounded-lg border border-gray-200 hover:bg-gray-100 transition-colors">
+                  <div className="flex items-center space-x-3">
+                    <div className="flex-shrink-0">
+                      {getActivityIcon(activity.action)}
+                    </div>
+                    <div>
+                      <p className="text-sm font-medium text-gray-900">
+                        {getActivityDescription(activity)}
+                      </p>
+                      <p className="text-xs text-gray-500">
+                        {new Date(activity.timestamp).toLocaleString()}
+                      </p>
+                    </div>
                   </div>
-                  <div className="text-right">
-                    <p className="text-xs text-gray-500">{activity.timestamp}</p>
+                  <div className="flex items-center space-x-2">
+                    <div className="text-right">
+                      <span className="inline-flex px-2 py-1 text-xs font-semibold rounded-full bg-blue-100 text-blue-800">
+                        {activity.action.replace(/_/g, ' ').replace(/\b\w/g, l => l.toUpperCase())}
+                      </span>
+                    </div>
                   </div>
                 </div>
               ))
             ) : (
-              <p className="text-sm text-gray-500">No recent activities</p>
+              <div className="text-center py-8">
+                <FileText className="w-12 h-12 text-gray-400 mx-auto mb-4" />
+                <p className="text-sm text-gray-500">No recent activities</p>
+                <p className="text-xs text-gray-400">Admin actions will appear here</p>
+              </div>
             )}
           </div>
         </Card>
