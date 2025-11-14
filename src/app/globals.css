@@ -24,3 +24,27 @@ body {
   color: var(--foreground);
   font-family: Arial, Helvetica, sans-serif;
 }
+
+/* Ensure form elements are visible */
+input, select, textarea {
+  background-color: white !important;
+  color: #1f2937 !important;
+}
+
+/* Improve table visibility */
+table {
+  border-collapse: separate;
+  border-spacing: 0;
+}
+
+/* Better focus visibility */
+input:focus, select:focus, textarea:focus, button:focus {
+  outline: 2px solid #3b82f6 !important;
+  outline-offset: 2px !important;
+}
+
+/* Ensure placeholder text is visible */
+::placeholder {
+  color: #9ca3af !important;
+  opacity: 1 !important;
+}
