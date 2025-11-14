@@ -7,7 +7,7 @@ import Card, { CardContent, CardHeader, CardTitle } from '@/components/ui/Card';
 import Input from '@/components/ui/Input';
 import Button from '@/components/ui/Button';
 
-export default function LoginPage() {
+function LoginPage() {
   const router = useRouter();
   const [formData, setFormData] = useState({
     username: '',
@@ -253,5 +253,8 @@ export default function LoginPage() {
         </div>
       </div>
     </div>
+    </div>
   );
 }
+
+export default LoginPage;

@@ -220,13 +220,13 @@ export async function POST(request: NextRequest) {
     }
 
     // Default contextual response based on user role
-    if (currentUser.role === 'admin') {
+    if (currentUser && currentUser.role === 'admin') {
       return NextResponse.json({
         success: true,
         response: "👨‍💼 **Admin Dashboard Help:**\n\nAs an administrator, you have access to:\n\n• **Employee Management** - Add, edit, view, relieve employees\n• **Leave Management** - Approve leaves, manage balances\n• **Payroll Processing** - Generate salaries, view records\n• **System Monitoring** - Audit logs, support messages\n• **Settings** - Admin management, system configuration\n\nWhat would you like to help with?",
         suggestions: ["Manage employees", "Process payroll", "Approve leaves", "System settings"]
       });
-    } else {
+    } else if (currentUser && currentUser.role === 'employee') {
       return NextResponse.json({
         success: true,
         response: "👨‍💻 **Employee Portal Help:**\n\nWelcome! Here's what you can do:\n\n• **📊 Dashboard** - View your employment overview\n• **📅 Leave Management** - Apply for leaves, check balances\n• **💰 Salary Slips** - Download payroll documents\n• **👤 Profile** - Update personal information\n• **🆘 Support** - Get help when needed\n\nHow can I assist you today?",
@@ -235,9 +235,10 @@ export async function POST(request: NextRequest) {
     }
 
     // Employee-specific responses
-    if (currentUser.role === 'employee') {
-      const employee = await User.findById(currentUser.userId);
-      const profile = await EmployeeProfile.findOne({ userId: currentUser.userId });
+    if (currentUser && currentUser.role === 'employee') {
+      const { userId } = currentUser;
+      const employee = await User.findById(userId);
+      const profile = await EmployeeProfile.findOne({ userId });
 
       if (messageLC.includes('salary') || messageLC.includes('pay')) {
         if (!profile) {
@@ -321,7 +322,7 @@ export async function POST(request: NextRequest) {
     }
 
     // Admin-specific responses
-    if (currentUser.role === 'admin') {
+    if (currentUser && currentUser.role === 'admin') {
       if (messageLC.includes('employee') && messageLC.includes('count')) {
         const employeeCount = await User.countDocuments({ role: 'employee' });
         const activeEmployees = await EmployeeProfile.countDocuments({ status: 'Active' });
