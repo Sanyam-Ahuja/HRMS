@@ -57,9 +57,9 @@ function LoginPage() {
   };
 
   return (
-    <div className="min-h-screen bg-gradient-to-br from-blue-50 to-indigo-100">
+    <div className="min-h-screen bg-gradient-to-br from-blue-50 to-indigo-100 flex flex-col">
       {/* Header with Government Branding */}
-      <div className="bg-white shadow-sm border-b border-gray-200">
+      <header className="bg-white shadow-sm border-b border-gray-200">
         <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
           <div className="flex items-center justify-between py-4">
             <div className="flex items-center space-x-4">
@@ -88,171 +88,201 @@ function LoginPage() {
             </div>
           </div>
         </div>
-      </div>
+      </header>
 
       {/* Main Content */}
-      <div className="min-h-screen bg-gradient-to-br from-blue-900 to-indigo-900 flex items-center justify-center py-6 px-4 sm:px-6 lg:px-8">
-        <div className="max-w-md w-full space-y-6 sm:space-y-8">
-          {/* Login Card Header */}
-          <div className="text-center">
-            <div className="mx-auto h-16 w-16 bg-blue-600 rounded-full flex items-center justify-center mb-4">
-              <svg className="h-8 w-8 text-white" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M16 7a4 4 0 11-8 0 4 4 0 018 0zM12 14a7 7 0 00-7 7h14a7 7 0 00-7-7z" />
-              </svg>
-            </div>
-            <h2 className="text-3xl font-bold text-gray-900">
-              Employee Login Portal
-            </h2>
-            <p className="mt-2 text-sm text-gray-600">
-              Access your employee dashboard and services
-            </p>
-          </div>
-
-        <Card>
-          <CardHeader>
-            <CardTitle className="text-center">Sign in to your account</CardTitle>
-          </CardHeader>
-          <CardContent>
-            <form onSubmit={handleSubmit} className="space-y-6">
-              <Input
-                label="Username"
-                name="username"
-                type="text"
-                value={formData.username}
-                onChange={handleChange}
-                placeholder="Enter your username"
-                required
-              />
-
-              <Input
-                label="Password"
-                name="password"
-                type="password"
-                value={formData.password}
-                onChange={handleChange}
-                placeholder="Enter your password"
-                required
-              />
-
-              {error && (
-                <div className="text-red-600 text-sm text-center">
-                  {error}
+      <main className="flex-1 py-6 px-4 sm:px-6 lg:px-8">
+        <div className="max-w-6xl mx-auto grid gap-8 lg:grid-cols-[minmax(0,1.1fr)_minmax(0,1fr)] items-start">
+          {/* Left: Login */}
+          <section className="flex justify-center">
+            <div className="max-w-md w-full space-y-6 sm:space-y-8">
+              {/* Login Card Header */}
+              <div className="text-center">
+                <div className="mx-auto h-16 w-16 bg-blue-600 rounded-full flex items-center justify-center mb-4">
+                  <svg className="h-8 w-8 text-white" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                    <path
+                      strokeLinecap="round"
+                      strokeLinejoin="round"
+                      strokeWidth={2}
+                      d="M16 7a4 4 0 11-8 0 4 4 0 018 0zM12 14a7 7 0 00-7 7h14a7 7 0 00-7-7z"
+                    />
+                  </svg>
                 </div>
-              )}
+                <h2 className="text-3xl font-bold text-gray-900">Employee Login Portal</h2>
+                <p className="mt-2 text-sm text-gray-600">
+                  Access your employee dashboard and services
+                </p>
+              </div>
 
-              <Button
-                type="submit"
-                className="w-full"
-                loading={loading}
-                disabled={!formData.username || !formData.password}
-              >
-                Sign In
-              </Button>
-            </form>
+              <Card>
+                <CardHeader>
+                  <CardTitle className="text-center">Sign in to your account</CardTitle>
+                </CardHeader>
+                <CardContent>
+                  <form onSubmit={handleSubmit} className="space-y-6">
+                    <Input
+                      label="Username"
+                      name="username"
+                      type="text"
+                      value={formData.username}
+                      onChange={handleChange}
+                      placeholder="Enter your username"
+                      required
+                    />
 
-            <div className="mt-6 text-center space-y-3">
-              <p className="text-sm text-gray-600">
-                Need help accessing your account?{' '}
-                <a
-                  href="/chatbot"
-                  className="font-medium text-blue-600 hover:text-blue-500"
-                >
-                  Contact Support
-                </a>
-              </p>
-              <div className="border-t border-gray-200 pt-3">
-                <a
-                  href="https://ehrms.upsdc.gov.in/AndroidApp/mSTHAPNAUserManual.pdf"
-                  target="_blank"
-                  rel="noopener noreferrer"
-                  className="inline-flex items-center space-x-2 text-sm font-medium text-blue-600 hover:text-blue-700 bg-blue-50 hover:bg-blue-100 px-4 py-2 rounded-md transition-colors"
-                >
-                  <svg className="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                    <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M12 10v6m0 0l-3-3m3 3l3-3m2 8H7a2 2 0 01-2-2V5a2 2 0 012-2h5.586a1 1 0 01.707.293l5.414 5.414a1 1 0 01.293.707V19a2 2 0 01-2 2z" />
-                  </svg>
-                  <span>Download Mobile App Manual</span>
-                  <svg className="w-3 h-3" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                    <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M10 6H6a2 2 0 00-2 2v10a2 2 0 002 2h10a2 2 0 002-2v-4M14 4h6m0 0v6m0-6L10 14" />
-                  </svg>
-                </a>
+                    <Input
+                      label="Password"
+                      name="password"
+                      type="password"
+                      value={formData.password}
+                      onChange={handleChange}
+                      placeholder="Enter your password"
+                      required
+                    />
+
+                    {error && (
+                      <div className="text-red-600 text-sm text-center">{error}</div>
+                    )}
+
+                    <Button
+                      type="submit"
+                      className="w-full"
+                      loading={loading}
+                      disabled={!formData.username || !formData.password}
+                    >
+                      Sign In
+                    </Button>
+                  </form>
+
+                  <div className="mt-6 text-center space-y-3">
+                    <p className="text-sm text-gray-600">
+                      Need help accessing your account?{' '}
+                      <a
+                        href="/chatbot"
+                        className="font-medium text-blue-600 hover:text-blue-500"
+                      >
+                        Contact Support
+                      </a>
+                    </p>
+                  </div>
+                </CardContent>
+              </Card>
+
+              <div className="text-center">
+                <p className="text-xs text-gray-500">
+                  Default admin: username=admin, password=admin123
+                </p>
               </div>
             </div>
-          </CardContent>
-        </Card>
+          </section>
 
-        {/* Features Overview */}
-        <div className="mt-6 sm:mt-8 bg-white rounded-lg shadow-sm p-4 sm:p-6">
-          <h3 className="text-lg font-semibold text-gray-900 mb-4 text-center">
-            Portal Features
-          </h3>
-          <div className="grid grid-cols-1 sm:grid-cols-2 gap-3 sm:gap-4 text-sm">
-            <div className="flex items-center space-x-2">
-              <div className="w-2 h-2 bg-green-500 rounded-full"></div>
-              <span>Payroll Management</span>
+          {/* Right: Info, features, manual, disclaimer (scrollable on smaller screens) */}
+          <section className="space-y-4 max-h-[calc(100vh-12rem)] overflow-y-auto pb-4">
+            {/* Features Overview */}
+            <div className="bg-white rounded-lg shadow-sm p-4 sm:p-6">
+              <h3 className="text-lg font-semibold text-gray-900 mb-4 text-center">
+                Portal Features
+              </h3>
+              <div className="grid grid-cols-1 sm:grid-cols-2 gap-3 sm:gap-4 text-sm">
+                <div className="flex items-center space-x-2">
+                  <div className="w-2 h-2 bg-green-500 rounded-full" />
+                  <span>Payroll Management</span>
+                </div>
+                <div className="flex items-center space-x-2">
+                  <div className="w-2 h-2 bg-blue-500 rounded-full" />
+                  <span>Salary Slip Updates</span>
+                </div>
+                <div className="flex items-center space-x-2">
+                  <div className="w-2 h-2 bg-purple-500 rounded-full" />
+                  <span>Job Profile Management</span>
+                </div>
+                <div className="flex items-center space-x-2">
+                  <div className="w-2 h-2 bg-orange-500 rounded-full" />
+                  <span>Promotion Management</span>
+                </div>
+                <div className="flex items-center space-x-2">
+                  <div className="w-2 h-2 bg-red-500 rounded-full" />
+                  <span>Leave Management</span>
+                </div>
+                <div className="flex items-center space-x-2">
+                  <div className="w-2 h-2 bg-indigo-500 rounded-full" />
+                  <span>HR Chatbot Support</span>
+                </div>
+              </div>
             </div>
-            <div className="flex items-center space-x-2">
-              <div className="w-2 h-2 bg-blue-500 rounded-full"></div>
-              <span>Salary Slip Updates</span>
-            </div>
-            <div className="flex items-center space-x-2">
-              <div className="w-2 h-2 bg-purple-500 rounded-full"></div>
-              <span>Job Profile Management</span>
-            </div>
-            <div className="flex items-center space-x-2">
-              <div className="w-2 h-2 bg-orange-500 rounded-full"></div>
-              <span>Promotion Management</span>
-            </div>
-            <div className="flex items-center space-x-2">
-              <div className="w-2 h-2 bg-red-500 rounded-full"></div>
-              <span>Leave Management</span>
-            </div>
-            <div className="flex items-center space-x-2">
-              <div className="w-2 h-2 bg-indigo-500 rounded-full"></div>
-              <span>HR Chatbot Support</span>
-            </div>
-          </div>
-        </div>
 
-        <div className="text-center">
-          <p className="text-xs text-gray-500">
-            Default admin: username=admin, password=admin123
-          </p>
-        </div>
+            {/* Mobile App Manual Tile */}
+            <div>
+              <a
+                href="https://ehrms.upsdc.gov.in/AndroidApp/mSTHAPNAUserManual.pdf"
+                target="_blank"
+                rel="noopener noreferrer"
+                className="block bg-blue-50 hover:bg-blue-100 border border-blue-100 rounded-lg p-4 sm:p-5 transition-colors shadow-sm"
+              >
+                <div className="flex items-center">
+                  <div className="flex-shrink-0 mr-4 flex items-center justify-center w-10 h-10 rounded-full bg-blue-600 text-white">
+                    <svg className="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                      <path
+                        strokeLinecap="round"
+                        strokeLinejoin="round"
+                        strokeWidth={2}
+                        d="M12 10v6m0 0l-3-3m3 3l3-3m2 8H7a2 2 0 01-2-2V5a2 2 0 012-2h5.586a1 1 0 01.707.293l5.414 5.414a1 1 0 01.293.707V19a2 2 0 01-2 2z"
+                      />
+                    </svg>
+                  </div>
+                  <div>
+                    <p className="text-sm font-semibold text-blue-900">
+                      Download Mobile App User Manual
+                    </p>
+                    <p className="text-xs text-blue-800 mt-1">
+                      Official mSTHAPNA Android App guide (opens in a new tab)
+                    </p>
+                  </div>
+                </div>
+              </a>
+            </div>
 
-        {/* Government Disclaimer Footer */}
-        <div className="mt-16 mb-8 bg-gray-100 border border-gray-200 rounded-lg p-4 text-xs text-gray-600 leading-relaxed">
-          <div className="flex items-center justify-center mb-2">
-            <div className="w-6 h-6 bg-green-600 rounded-full flex items-center justify-center mr-3">
-              <div className="w-3 h-3 bg-white rounded-full"></div>
+            {/* Government Disclaimer Footer - lower visibility, appears on scroll */}
+            <div className="mt-4 bg-gray-100 border border-gray-200 rounded-lg p-4 text-xs text-gray-600 leading-relaxed">
+              <div className="flex items-center justify-center mb-2">
+                <div className="w-6 h-6 bg-green-600 rounded-full flex items-center justify-center mr-3">
+                  <div className="w-3 h-3 bg-white rounded-full" />
+                </div>
+              </div>
+
+              <div className="text-center space-y-2">
+                <p>
+                  <strong>Disclaimer:</strong> This website is managed by National Informatics Centre, Government of
+                  India. This is an e-governance initiative for Uttar Pradesh Government. The data available on this
+                  website is owned by respective departments.
+                </p>
+
+                <p>
+                  <strong>Best viewed in modern browsers:</strong> Chrome, Firefox, Safari, Edge
+                </p>
+
+                <p>
+                  <strong>Technical Support:</strong> support@ehrms.up.gov.in
+                </p>
+
+                <div className="flex items-center justify-center space-x-4 mt-3 pt-2 border-t border-gray-300">
+                  <a href="/about" className="text-blue-600 hover:text-blue-700 font-medium">
+                    About
+                  </a>
+                  <span className="text-gray-400">|</span>
+                  <a href="/chatbot" className="text-blue-600 hover:text-blue-700 font-medium">
+                    Contact
+                  </a>
+                  <span className="text-gray-400">|</span>
+                  <a href="/help" className="text-blue-600 hover:text-blue-700 font-medium">
+                    Help
+                  </a>
+                </div>
+              </div>
             </div>
-          </div>
-          
-          <div className="text-center space-y-2">
-            <p>
-              <strong>Disclaimer:</strong> This website is managed by National Informatics Centre, Government of India. 
-              This is an e-governance initiative for Uttar Pradesh Government. The data available on this website is owned by 
-              respective departments.
-            </p>
-            
-            <p>
-              <strong>Best viewed in modern browsers:</strong> Chrome, Firefox, Safari, Edge
-            </p>
-            
-            <p>
-              <strong>Technical Support:</strong> support@ehrms.up.gov.in
-            </p>
-            
-            <div className="flex items-center justify-center space-x-4 mt-3 pt-2 border-t border-gray-300">
-              <a href="/about" className="text-blue-600 hover:text-blue-700 font-medium">About</a>
-              <span className="text-gray-400">|</span>
-              <a href="/chatbot" className="text-blue-600 hover:text-blue-700 font-medium">Contact</a>
-              <span className="text-gray-400">|</span>
-              <a href="/help" className="text-blue-600 hover:text-blue-700 font-medium">Help</a>
-            </div>
-          </div>
+          </section>
         </div>
-      </div>
-    </div>
+      </main>
     </div>
   );
 }
